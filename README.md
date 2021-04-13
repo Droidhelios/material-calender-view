@@ -24,10 +24,10 @@ allprojects {
 Add this to your project build.gradle
 
 #### Dependency
-[![](https://jitpack.io/v/org.bitbucket.droidhelios/material-calender-view.svg)](https://jitpack.io/#org.bitbucket.droidhelios/material-calender-view)
+[![](https://jitpack.io/v/Droidhelios/material-calender-view.svg)](https://jitpack.io/#Droidhelios/material-calender-view)
 ```gradle
 dependencies {
-        implementation 'org.bitbucket.droidhelios:material-calender-view:1.0'
+        implementation 'com.github.Droidhelios:material-calender-view:1.0'
 }
 ```
 
