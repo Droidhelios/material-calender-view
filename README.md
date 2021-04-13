@@ -27,7 +27,7 @@ Add this to your project build.gradle
 [![](https://jitpack.io/v/Droidhelios/material-calender-view.svg)](https://jitpack.io/#Droidhelios/material-calender-view)
 ```gradle
 dependencies {
-        implementation 'com.github.Droidhelios:material-calender-view:1.0'
+        implementation 'com.github.Droidhelios:material-calender-view:1.1'
 }
 ```
 
