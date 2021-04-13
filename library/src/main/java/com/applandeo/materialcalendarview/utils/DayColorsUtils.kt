@@ -3,13 +3,18 @@
 package com.applandeo.materialcalendarview.utils
 
 import android.content.Context
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
+import android.graphics.PorterDuff
 import android.graphics.Typeface
+import android.os.Build
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.applandeo.materialcalendarview.CalendarDay
 import com.applandeo.materialcalendarview.R
 import java.util.*
+
 
 /**
  * This class is used to set a style of calendar cells.
@@ -26,18 +31,18 @@ import java.util.*
  * @param backgroundRes A resource of a background drawable
  */
 fun TextView.setDayColors(
-        textColor: Int,
-        typeface: Typeface? = null,
-        backgroundRes: Int = R.drawable.background_transparent
+    textColor: Int,
+    typeface: Typeface? = null,
+    backgroundRes: Int = R.drawable.background_transparent
 ) {
     typeface?.let { setTypeface(typeface) }
     setTextColor(textColor)
     setBackgroundResource(backgroundRes)
 }
 fun TextView.setDayColorsHighlighted(
-        textColor: Int,
-        typeface: Typeface? = null,
-        backgroundRes: Int = R.drawable.background_circle
+    textColor: Int,
+    typeface: Typeface? = null,
+    backgroundRes: Int = R.drawable.background_circle
 ) {
     typeface?.let { setTypeface(typeface) }
     setTextColor(textColor)
@@ -52,11 +57,15 @@ fun TextView.setDayColorsHighlighted(
  * @param dayLabel           TextView containing a day number
  * @param calendarProperties A resource of a selection background color
  */
-fun setSelectedDayColors(dayLabel: TextView, calendar: Calendar, calendarProperties: CalendarProperties) {
+fun setSelectedDayColors(
+    dayLabel: TextView,
+    calendar: Calendar,
+    calendarProperties: CalendarProperties
+) {
     val calendarDay = calendarProperties.findDayProperties(calendar)
 
     val labelColor = calendarDay?.getSelectedLabelColor(dayLabel.context)
-            ?: calendarProperties.selectionLabelColor
+        ?: calendarProperties.selectionLabelColor
 
     val calendarDayBackgroundRes = calendarDay?.selectedBackgroundResource
     val calendarDayBackgroundDrawable = calendarDay?.selectedBackgroundDrawable
@@ -65,7 +74,7 @@ fun setSelectedDayColors(dayLabel: TextView, calendar: Calendar, calendarPropert
         dayLabel.setDayColors(labelColor, backgroundRes = calendarDayBackgroundRes)
     } else if (calendarDayBackgroundDrawable != null && !calendarProperties.selectionDisabled) {
         dayLabel.setDayColors(labelColor)
-        dayLabel.setBackgroundDrawable(calendarDayBackgroundDrawable)
+        dayLabel.setBackground(calendarDayBackgroundDrawable)
     } else {
         dayLabel.setDayColors(labelColor, backgroundRes = calendarProperties.selectionBackground)
         tintBackground(dayLabel, calendarProperties.selectionColor)
@@ -82,7 +91,11 @@ fun setSelectedDayColors(dayLabel: TextView, calendar: Calendar, calendarPropert
  * @param dayLabel           TextView containing a day number
  * @param calendarProperties A resource of a color used to mark today day
  */
-fun setCurrentMonthDayColors(calendar: Calendar, dayLabel: TextView?, calendarProperties: CalendarProperties) {
+fun setCurrentMonthDayColors(
+    calendar: Calendar,
+    dayLabel: TextView?,
+    calendarProperties: CalendarProperties
+) {
     if (dayLabel == null) return
 
     setNormalDayColors(calendar, dayLabel, calendarProperties)
@@ -100,7 +113,11 @@ fun setCurrentMonthDayColors(calendar: Calendar, dayLabel: TextView?, calendarPr
     }
 }
 
-private fun setTodayColors(calendar: Calendar, dayLabel: TextView, calendarProperties: CalendarProperties) {
+private fun setTodayColors(
+    calendar: Calendar,
+    dayLabel: TextView,
+    calendarProperties: CalendarProperties
+) {
     val calendarDay = calendarProperties.findDayProperties(calendar)
 
     val calendarDayBackgroundRes = calendarDay?.backgroundResource
@@ -108,21 +125,21 @@ private fun setTodayColors(calendar: Calendar, dayLabel: TextView, calendarPrope
 
     if (calendarDayBackgroundRes != null) {
         dayLabel.setDayColors(
-                textColor = calendarProperties.todayLabelColor,
-                typeface = calendarProperties.todayTypeface,
-                backgroundRes = calendarDayBackgroundRes
+            textColor = calendarProperties.todayLabelColor,
+            typeface = calendarProperties.todayTypeface,
+            backgroundRes = calendarDayBackgroundRes
         )
     } else if (calendarDayBackgroundDrawable != null) {
         dayLabel.setDayColors(
-                textColor = calendarProperties.todayLabelColor,
-                typeface = calendarProperties.todayTypeface
+            textColor = calendarProperties.todayLabelColor,
+            typeface = calendarProperties.todayTypeface
         )
-        dayLabel.setBackgroundDrawable(calendarDayBackgroundDrawable)
+        dayLabel.setBackground(calendarDayBackgroundDrawable)
     } else {
         dayLabel.setDayColors(
-                textColor = calendarProperties.todayLabelColor,
-                typeface = calendarProperties.todayTypeface,
-                backgroundRes = R.drawable.background_transparent
+            textColor = calendarProperties.todayLabelColor,
+            typeface = calendarProperties.todayTypeface,
+            backgroundRes = R.drawable.background_transparent
         )
     }
 
@@ -130,14 +147,18 @@ private fun setTodayColors(calendar: Calendar, dayLabel: TextView, calendarPrope
     // TODO remove or set as deprecated below functionality in next stable version
     if (calendarProperties.todayColor != 0) {
         dayLabel.setDayColors(
-                textColor = calendarProperties.selectionLabelColor,
-                backgroundRes = R.drawable.background_color_circle_selector
+            textColor = calendarProperties.selectionLabelColor,
+            backgroundRes = R.drawable.background_color_circle_selector
         )
         tintBackground(dayLabel, calendarProperties.todayColor)
     }
 }
 
-private fun setEventDayColors(day: Calendar, dayLabel: TextView, calendarProperties: CalendarProperties) {
+private fun setEventDayColors(
+    day: Calendar,
+    dayLabel: TextView,
+    calendarProperties: CalendarProperties
+) {
     day.getEventDayWithLabelColor(calendarProperties)?.let { eventDay ->
         dayLabel.setDayColors(textColor = eventDay.labelColor)
     }
@@ -147,11 +168,15 @@ private fun setHighlightedDayColors(dayLabel: TextView, calendarProperties: Cale
     dayLabel.setDayColorsHighlighted(textColor = calendarProperties.highlightedDaysLabelsColor)
 }
 
-private fun setNormalDayColors(calendar: Calendar, dayLabel: TextView, calendarProperties: CalendarProperties) {
+private fun setNormalDayColors(
+    calendar: Calendar,
+    dayLabel: TextView,
+    calendarProperties: CalendarProperties
+) {
     val calendarDay = calendarProperties.findDayProperties(calendar)
 
     val labelColor = calendarDay?.getLabelColor(dayLabel.context)
-            ?: calendarProperties.daysLabelsColor
+        ?: calendarProperties.daysLabelsColor
 
     val calendarDayBackgroundRes = calendarDay?.backgroundResource
     val calendarDayBackgroundDrawable = calendarDay?.backgroundDrawable
@@ -160,14 +185,19 @@ private fun setNormalDayColors(calendar: Calendar, dayLabel: TextView, calendarP
         dayLabel.setDayColors(labelColor, backgroundRes = calendarDayBackgroundRes)
     } else if (calendarDayBackgroundDrawable != null) {
         dayLabel.setDayColors(labelColor)
-        dayLabel.setBackgroundDrawable(calendarDayBackgroundDrawable)
+        dayLabel.setBackground(calendarDayBackgroundDrawable)
     } else {
         dayLabel.setDayColors(labelColor, backgroundRes = R.drawable.background_transparent)
     }
 }
 
 private fun tintBackground(dayLabel: TextView, color: Int) {
-    dayLabel.background.setColorFilter(color, android.graphics.PorterDuff.Mode.MULTIPLY)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        dayLabel.background.setColorFilter(BlendModeColorFilter(color, BlendMode.MULTIPLY))
+    } else {
+        @Suppress("DEPRECATION")
+        dayLabel.background.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+    }
 }
 
 private fun CalendarDay.getLabelColor(context: Context): Int? {

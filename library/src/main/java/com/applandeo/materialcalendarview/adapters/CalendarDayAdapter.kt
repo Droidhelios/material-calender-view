@@ -23,11 +23,11 @@ private const val INVISIBLE_IMAGE_ALPHA = 0.12f
  * Created by Applandeo team
  */
 class CalendarDayAdapter(
-        context: Context,
-        private val calendarPageAdapter: CalendarPageAdapter,
-        private val calendarProperties: CalendarProperties,
-        dates: MutableList<Date>,
-        pageMonth: Int
+    context: Context,
+    private val calendarPageAdapter: CalendarPageAdapter,
+    private val calendarProperties: CalendarProperties,
+    dates: MutableList<Date>,
+    pageMonth: Int
 ) : ArrayAdapter<Date>(context, calendarProperties.itemLayoutResource, dates) {
 
     private val pageMonth = if (pageMonth < 0) 11 else pageMonth
@@ -35,9 +35,15 @@ class CalendarDayAdapter(
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val dayView = view
-                ?: LayoutInflater.from(context).inflate(calendarProperties.itemLayoutResource, parent, false)
+            ?: LayoutInflater.from(context).inflate(calendarProperties.itemLayoutResource, parent, false)
 
-        val day = GregorianCalendar().apply { time = getItem(position) }
+        var mDate = getItem(position)
+        if(mDate == null){
+            mDate = Date()
+        }
+        val day = GregorianCalendar().apply {
+            time = mDate
+        }
 
         dayView.dayIcon?.loadIcon(day)
 
@@ -59,8 +65,8 @@ class CalendarDayAdapter(
             // Setting view for all SelectedDays
             day.isSelectedDay() -> {
                 calendarPageAdapter.selectedDays
-                        .firstOrNull { selectedDay -> selectedDay.calendar == day }
-                        ?.let { selectedDay -> selectedDay.view = dayLabel }
+                    .firstOrNull { selectedDay -> selectedDay.calendar == day }
+                    ?.let { selectedDay -> selectedDay.view = dayLabel }
                 setSelectedDayColors(dayLabel, day, calendarProperties)
             }
 
