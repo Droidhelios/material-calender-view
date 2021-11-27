@@ -26,13 +26,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompat"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintlayout"
-    implementation "com.annimon:stream:$rootProject.ext.stream"
     testImplementation 'junit:junit:4.12'
+
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompat"
     implementation "androidx.core:core-ktx:$rootProject.ext.core_ktx"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

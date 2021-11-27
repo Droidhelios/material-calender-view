@@ -13,9 +13,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
     ext {
-        appcompat = '1.3.0-rc01'
-        constraintlayout = '2.0.4'
-        stream = '1.2.2'
+        appcompat = '1.3.0'
         core_ktx = '1.3.2'
     }
 }
